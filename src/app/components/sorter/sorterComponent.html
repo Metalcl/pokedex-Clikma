@@ -1,0 +1,19 @@
+<div class="sort-buttons">
+  <p-button
+    label="Ordenar creciente"
+    (click)="onClick('asc')"
+    [severity]="currentDirection === 'asc' ? 'contrast' : 'success'"
+    [variant]="currentDirection === 'asc' ? undefined : 'outlined'"
+    tooltipPosition="bottom"
+    pTooltip="Orden alfabético [ A-Z ]"
+  ></p-button>
+
+  <p-button
+    label="Ordenar decreciente"
+    (click)="onClick('desc')"
+    [severity]="currentDirection === 'desc' ? 'contrast' : 'success'"
+    [variant]="currentDirection === 'desc' ? undefined : 'outlined'"
+    tooltipPosition="bottom"
+    pTooltip="Orden alfabético [ Z-A ]"
+  ></p-button>
+</div>

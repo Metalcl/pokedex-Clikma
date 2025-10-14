@@ -1,6 +1,9 @@
 <div>
-
   <app-searcher (search)="onSearch($event)"></app-searcher>
+  <app-sorter
+    [currentDirection]="currentSortDirection"
+    (sortChange)="onSortChange($event)"
+  ></app-sorter>
 
   @if (pokemonList$ | async; as data) { @if (data && data.results && data.results.length > 0) {
 

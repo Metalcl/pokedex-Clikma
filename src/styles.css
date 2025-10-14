@@ -1,4 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
 .pokedex-grid {
   display: flex;
   flex-wrap: wrap;
@@ -11,5 +16,13 @@
   display: flex;
   justify-content: center;
   padding: 1rem;
-  margin-bottom: 1.5rem;
+}
+
+.sort-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
 }
