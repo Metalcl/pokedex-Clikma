@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.pokedex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
