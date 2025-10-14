@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
 
@@ -7,14 +7,24 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 
-import { SortDirection } from '../sorter/sorterComponent';
+import { SortDirection, SorterComponent } from '../../components/sorter/sorterComponent'; // Ajusta la ruta
+import { SearcherComponent } from '../../components/searcher/searcherComponent'; // Ajusta la ruta
 
 @Component({
   selector: 'app-table-display',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, InputTextModule],
+  imports: [
+    CommonModule,
+    TableModule,
+    ButtonModule,
+    InputTextModule,
+    TitleCasePipe,
+    SearcherComponent,
+    SorterComponent
+  ],
   templateUrl: './tableDisplayComponent.html',
 })
+
 export class TableDisplayComponent {
   @Input() pokemonList$!: Observable<any>;
   @Input() currentSortDirection: SortDirection = 'default';
@@ -29,6 +39,14 @@ export class TableDisplayComponent {
   @Output() search = new EventEmitter<string>();
   @Output() sortChange = new EventEmitter<SortDirection>();
   @Output() pageChange = new EventEmitter<PaginatorState>();
+
+  onSearch(searchTerm: string): void {
+    this.search.emit(searchTerm);
+  }
+
+  onSortChange(direction: SortDirection): void {
+    this.sortChange.emit(direction);
+  }
 
   onPageChange(event: PaginatorState) {
     this.pageChange.emit(event);

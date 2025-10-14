@@ -66,7 +66,7 @@ export class PokedexPage implements OnInit {
         .pipe(
           map(data => this.applySort(data)),
           tap(data => {
-            this.errorMessage = data.results && data.results.length > 0 ? '' : 'No se encontraron Pokémon que coincidan con la búsqueda.';
+
             this.totalRecords = data.results?.length ?? 0;
           }),
           catchError((error) => {

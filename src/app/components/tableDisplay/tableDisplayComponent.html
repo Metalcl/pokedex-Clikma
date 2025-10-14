@@ -1,5 +1,3 @@
-<div class="search-sort-container flex justify-between items-center p-4"></div>
-
 @if (errorMessage) {
 <div class="text-red-500 p-4">{{ errorMessage }}</div>
 } @else if (!errorMessage && totalRecords === 0 && !isSearching) {
@@ -7,8 +5,7 @@
 }
 
 <div class="card p-4">
-  @if (pokemonList$ | async; as data) { @if (data.results?.length > 0 || (!isSearching &&
-  totalRecords > 0)) {
+  @if (pokemonList$ | async; as data) { @if (data.results || totalRecords > 0) {
   <p-table
     [value]="data.results"
     [paginator]="!isSearching"
@@ -21,13 +18,23 @@
     currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} Pokémon"
     [lazy]="true"
     (onPage)="onPageChange($event)"
+    [scrollHeight]="'flex'"
+    [scrollable]="true"
   >
-    [rowsPerPageOptions]="[10, 25, 50]"
+    <ng-template #caption>
+      <div class="flex justify-between items-center p-2">
+        <app-searcher (search)="onSearch($event)"></app-searcher>
+
+        <app-sorter
+          [currentDirection]="currentSortDirection"
+          (sortChange)="onSortChange($event)"
+        ></app-sorter>
+      </div>
+    </ng-template>
+
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 25%" class="text-left">
-          Número
-        </th>
+        <th style="width: 25%" class="text-left">Número</th>
         <th style="width: 25%" class="text-center">Nombre</th>
         <th style="width: 25%" class="text-center">Imagen</th>
         <th style="width: 25%" class="text-left">Acción</th>
@@ -36,9 +43,13 @@
 
     <ng-template pTemplate="body" let-pokemon>
       <tr>
-        <td>#{{ getPokemonId(pokemon.url) }}</td>
-        <td>{{ pokemon.name | titlecase }}</td>
-        <td class="text-center">
+        <td class="align-middle text-center">#{{ getPokemonId(pokemon.url) }}</td>
+
+        <td class="align-middle text-center">
+          {{ pokemon.name | titlecase }}
+        </td>
+
+        <td class="align-middle text-center">
           <img
             alt="{{ pokemon.name | titlecase }}"
             [src]="
@@ -49,12 +60,18 @@
             style="width: 100px; height: 100px; margin: 0 auto"
           />
         </td>
+
+        <td class="align-middle text-left"></td>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="emptymessage" let-results> </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center p-4">
+          No se encontraron Pokémon que coincidan con la búsqueda.
+        </td>
+      </tr>
+    </ng-template>
   </p-table>
-  } @else if (data.results?.length === 0 && isSearching) {
-  <div class="text-center p-4">No se encontraron Pokémon que coincidan con la búsqueda.</div>
   } }
 </div>
