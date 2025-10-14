@@ -80,24 +80,27 @@ export class PokedexPage implements OnInit {
       this.isSearching = false;
       this.errorMessage = '';
 
-      this.pokemonList$ = this.pokemonService.getPokemonList(this.limit, this.offset)
+      const MAX_POKEMON_COUNT = 1025;
+      this.totalRecords = MAX_POKEMON_COUNT;
 
-      if (this.offset >= 1025) {
-        this.pokemonList$ = of({ results: [], count: 1025 });
-        this.totalRecords = 1025;
+      let effectiveLimit = this.limit;
+      if (this.offset + this.limit > MAX_POKEMON_COUNT) {
+        effectiveLimit = MAX_POKEMON_COUNT - this.offset;
+      }
+
+      if (this.offset >= MAX_POKEMON_COUNT) {
+        this.pokemonList$ = of({ results: [], count: MAX_POKEMON_COUNT });
         return;
       }
 
-      this.pokemonList$ = this.pokemonService.getPokemonList(this.limit, this.offset)
+      this.pokemonList$ = this.pokemonService.getPokemonList(effectiveLimit, this.offset)
         .pipe(
           map(data => this.applySort(data)),
-          tap(data => {
-            this.totalRecords = 1025;
-          }),
+          tap(data => { }),
           catchError((error) => {
             console.error('Error cargando lista paginada:', error);
             this.errorMessage = 'Hubo un error al cargar la lista de Pokémon.';
-            return of({ results: [], count: 1025 });
+            return of({ results: [], count: MAX_POKEMON_COUNT });
           })
         );
     }
