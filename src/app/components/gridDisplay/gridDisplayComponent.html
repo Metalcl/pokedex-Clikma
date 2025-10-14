@@ -1,0 +1,65 @@
+<div>
+  <div class="flex justify-between items-center p-2 mb-4">
+    <app-searcher (search)="onSearch($event)"></app-searcher>
+    <app-sorter
+      [currentDirection]="currentSortDirection"
+      (sortChange)="onSortChange($event)"
+    ></app-sorter>
+  </div>
+
+  @if (pokemonList$ | async; as data) {
+    @if (data && data.results && data.results.length > 0) {
+      <div class="pokedex-grid">
+        @for (pokemon of data.results; track pokemon.name; let i = $index) {
+          @if (getPokemonId(i, pokemon.url); as id) {
+            <p-card
+              [header]="pokemon.name | titlecase"
+              [subheader]="'#' + id"
+              [style]="{ width: '18rem', margin: '1rem', textAlign: 'center' }"
+            >
+              <div>
+                <img
+                  alt="{{ pokemon.name | titlecase }}"
+                  [src]="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png'"
+                  style="width: 150px; height: 150px; margin: 0 auto; display: block"
+                />
+              </div>
+            </p-card>
+          }
+        }
+      </div>
+
+      @if (!isSearching) {
+        <p-paginator
+          [rows]="limit"
+          [totalRecords]="totalRecords"
+          [first]="offset"
+          [rowsPerPageOptions]="[10, 20, 50]"
+          (onPageChange)="onPageChange($event)"
+        >
+        </p-paginator>
+      }
+    } @else {
+      @if (errorMessage) {
+        <p>{{ errorMessage }}</p>
+      } @else {
+        <p>No se encontraron Pokémon.</p>
+      }
+    }
+  } @else {
+    <div class="pokedex-grid">
+      @for (item of [].constructor(limit); track $index) {
+        <p-card
+          [style]="{ width: '18rem', margin: '1rem', textAlign: 'center' }"
+          header="&nbsp;"
+          subheader="&nbsp;"
+        >
+          <ng-template #header>
+            <p-skeleton width="70%" height="1.5rem" style="margin: 1rem auto 0.5rem"></p-skeleton>
+            <p-skeleton width="30%" height="1rem" style="margin: 0.5rem auto 1rem"></p-skeleton>
+          </ng-template>
+        </p-card>
+      }
+    </div>
+  }
+</div>

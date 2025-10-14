@@ -1,20 +1,19 @@
 import { PokemonService } from './../services/Pokemons.services';
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, TitleCasePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 
-import { SearcherComponent } from '../components/searcher/searcherComponent';
-import { SorterComponent, SortDirection } from '../components/sorter/sorterComponent';
+import { GridDisplayComponent } from '../components/gridDisplay/gridDisplayComponent';
 
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { CardModule } from 'primeng/card'
-import { SkeletonModule } from 'primeng/skeleton';
+import { SortDirection } from '../components/sorter/sorterComponent';
+import { PaginatorState } from 'primeng/paginator';
+
 
 @Component({
   selector: 'app-pokedex-page',
   standalone: true,
-  imports: [CommonModule, SearcherComponent, SorterComponent, PaginatorModule, TitleCasePipe, CardModule, SkeletonModule],
+  imports: [CommonModule, GridDisplayComponent],
   templateUrl: '../pages/pokedexPage.html',
 })
 export class PokedexPage implements OnInit {
@@ -24,6 +23,7 @@ export class PokedexPage implements OnInit {
   isSearching: boolean = false;
 
   currentSortDirection: SortDirection = 'default';
+  currentView: 'grid' | 'table' = 'grid';
 
   totalRecords: number = 0;
   limit: number = 10;
@@ -60,16 +60,20 @@ export class PokedexPage implements OnInit {
   loadPokemonList(): void {
     if (this.searchTerm.trim()) {
       this.isSearching = true;
-      console.log('Buscando Pokémon con el término:', this.searchTerm);
       this.errorMessage = '';
 
       this.pokemonList$ = this.pokemonService.searchPokemon(this.searchTerm)
         .pipe(
           map(data => this.applySort(data)),
           tap(data => {
-            this.errorMessage = data.count > 0 ? '' : 'No se encontraron Pokémon que coincidan con la búsqueda.';
+            this.errorMessage = data.results && data.results.length > 0 ? '' : 'No se encontraron Pokémon que coincidan con la búsqueda.';
+            this.totalRecords = data.results?.length ?? 0;
           }),
-          catchError((error) => { console.error('Error en la búsqueda:', error); this.errorMessage = 'Hubo un error inesperado durante la búsqueda.'; return of({ results: [], count: 0 }); })
+          catchError((error) => {
+            console.error('Error en la búsqueda:', error);
+            this.errorMessage = 'Hubo un error inesperado durante la búsqueda.';
+            return of({ results: [], count: 0 });
+          })
         );
     }
     else {
@@ -88,7 +92,11 @@ export class PokedexPage implements OnInit {
           tap(data => {
             this.totalRecords = 1025;
           }),
-          catchError((error) => { console.error('Error cargando lista paginada:', error); this.errorMessage = 'Hubo un error al cargar la lista de Pokémon.'; return of({ results: [], count: 1025 }); })
+          catchError((error) => {
+            console.error('Error cargando lista paginada:', error);
+            this.errorMessage = 'Hubo un error al cargar la lista de Pokémon.';
+            return of({ results: [], count: 1025 });
+          })
         );
     }
   }
@@ -112,20 +120,7 @@ export class PokedexPage implements OnInit {
     }
   }
 
-  getPokemonId(index: number, pokemonUrl?: string): number {
-    let id: number;
-
-    if (pokemonUrl) {
-      const parts = pokemonUrl.split('/');
-      id = Number(parts[parts.length - 2]);
-    } else {
-      id = this.offset + index + 1;
-    }
-
-    if (id > 1025) {
-      return 0;
-    }
-
-    return id;
+  setView(view: 'grid' | 'table'): void {
+    this.currentView = view;
   }
 }
