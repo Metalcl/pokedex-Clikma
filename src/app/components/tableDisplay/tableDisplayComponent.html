@@ -52,11 +52,7 @@
         <td class="align-middle text-center">
           <img
             alt="{{ pokemon.name | titlecase }}"
-            [src]="
-              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' +
-              getPokemonId(pokemon.url) +
-              '.png'
-            "
+            [src]="pokemon.imageUrlDreamWorld || pokemon.imageUrlDefault"
             style="width: 100px; height: 100px; margin: 0 auto"
           />
         </td>
