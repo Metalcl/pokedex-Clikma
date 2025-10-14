@@ -1,11 +1,6 @@
 <div>
   <div class="view-selector flex space-x-4 mb-4">
-    <button
-      (click)="setView('table')"
-      [class.active]="currentView === 'table'"
-      disabled
-      title="Próximamente"
-    >
+    <button (click)="setView('table')" [class.active]="currentView === 'table'">
       Mostrar Tabla
     </button>
     <button (click)="setView('grid')" [class.active]="currentView === 'grid'">
@@ -13,7 +8,20 @@
     </button>
   </div>
 
-  @if (currentView === 'grid') {
+  @if (currentView === 'table') {
+  <app-table-display
+    [pokemonList$]="pokemonList$"
+    [currentSortDirection]="currentSortDirection"
+    [totalRecords]="totalRecords"
+    [rows]="limit"
+    [first]="offset"
+    [isSearching]="isSearching"
+    [errorMessage]="errorMessage"
+    (search)="onSearch($event)"
+    (sortChange)="onSortChange($event)"
+    (pageChange)="onPageChange($event)"
+  ></app-table-display>
+  } @if (currentView === 'grid') {
   <app-grid-display
     [pokemonList$]="pokemonList$"
     [currentSortDirection]="currentSortDirection"
@@ -26,7 +34,5 @@
     (sortChange)="onSortChange($event)"
     (pageChange)="onPageChange($event)"
   ></app-grid-display>
-  } @if (currentView === 'table') {
-  <p>La vista de tabla estará aquí...</p>
   }
 </div>

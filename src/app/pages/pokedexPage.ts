@@ -4,7 +4,9 @@ import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 
+
 import { GridDisplayComponent } from '../components/gridDisplay/gridDisplayComponent';
+import { TableDisplayComponent } from '../components/tableDisplay/tableDisplayComponent';
 
 import { SortDirection } from '../components/sorter/sorterComponent';
 import { PaginatorState } from 'primeng/paginator';
@@ -13,7 +15,7 @@ import { PaginatorState } from 'primeng/paginator';
 @Component({
   selector: 'app-pokedex-page',
   standalone: true,
-  imports: [CommonModule, GridDisplayComponent],
+  imports: [CommonModule, GridDisplayComponent, TableDisplayComponent],
   templateUrl: '../pages/pokedexPage.html',
 })
 export class PokedexPage implements OnInit {
@@ -23,7 +25,7 @@ export class PokedexPage implements OnInit {
   isSearching: boolean = false;
 
   currentSortDirection: SortDirection = 'default';
-  currentView: 'grid' | 'table' = 'grid';
+  currentView: 'table' | 'grid' = 'table';
 
   totalRecords: number = 0;
   limit: number = 10;
@@ -36,8 +38,6 @@ export class PokedexPage implements OnInit {
   ngOnInit(): void {
     this.loadPokemonList();
   }
-
-  // --- Lógica de Carga de Lista y Búsqueda ---
 
   onSortChange(direction: SortDirection): void {
     this.currentSortDirection = direction;

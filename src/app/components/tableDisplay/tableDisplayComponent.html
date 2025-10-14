@@ -1,0 +1,73 @@
+<div class="search-sort-container flex justify-between items-center p-4">
+  <div class="sort-box">
+    <p-button
+      (onClick)="sortChange.emit(currentSortDirection === 'asc' ? 'desc' : 'asc')"
+      [label]="'Ordenar: ' + (currentSortDirection | uppercase)"
+      icon="pi pi-sort-alt"
+    />
+  </div>
+</div>
+
+@if (errorMessage) {
+<div class="text-red-500 p-4">{{ errorMessage }}</div>
+} @else if (!errorMessage && totalRecords === 0 && !isSearching) {
+<div class="p-4">Cargando Pokémon...</div>
+}
+
+<div class="card p-4">
+  @if (pokemonList$ | async; as data) {
+  <p-table
+    [value]="data.results"
+    [paginator]="!isSearching"
+    [rows]="rows"
+    [first]="first"
+    [totalRecords]="totalRecords"
+    [showCurrentPageReport]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} Pokémon"
+    (onPage)="onPageChange($event)"
+    [rowsPerPageOptions]="[10, 25, 50]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 25%" class="text-left">Número</th>
+        <th style="width: 25%" class="text-center">Nombre</th>
+        <th style="width: 25%" class="text-center">Imagen</th>
+        <th style="width: 25%" class="text-left">Acción</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-pokemon>
+      <tr>
+        <td>{{ getPokemonId(pokemon.url) }}</td>
+        <td>{{ pokemon.name| titlecase }}</td>
+        <td class="text-center">
+          <img
+            alt="{{ pokemon.name | titlecase }}"
+            [src]="
+              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' +
+              getPokemonId(pokemon.url) +
+              '.png'
+            "
+            style="width: 100px; height: 100px; margin: 0 auto"
+          />
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage" let-results>
+      @if (isSearching) {
+      <tr>
+        <td colspan="3" class="text-center">
+          No se encontraron Pokémon que coincidan con la búsqueda.
+        </td>
+      </tr>
+      } @else {
+      <tr>
+        <td colspan="3" class="text-center">No hay Pokémon para mostrar.</td>
+      </tr>
+      }
+    </ng-template>
+  </p-table>
+  }
+</div>
