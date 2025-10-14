@@ -80,6 +80,8 @@ export class PokedexPage implements OnInit {
       this.isSearching = false;
       this.errorMessage = '';
 
+      this.pokemonList$ = this.pokemonService.getPokemonList(this.limit, this.offset)
+
       if (this.offset >= 1025) {
         this.pokemonList$ = of({ results: [], count: 1025 });
         this.totalRecords = 1025;
