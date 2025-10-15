@@ -118,9 +118,9 @@
             @for (typeInfo of details.types; track typeInfo.slot) {
             <img
               [src]="'/types/' + typeInfo.type.name.toLowerCase() + '.png'"
-              [alt]="'Tipo ' + (typeInfo.type.name | titlecase)"
+              [title]="getTypeNameInSpanish(typeInfo.type.name)"
+              [alt]="'Tipo ' + getTypeNameInSpanish(typeInfo.type.name)"
               style="height: 3.5rem; width: 3.5rem; object-fit: contain"
-              [title]="typeInfo.type.name | titlecase"
               class="type-icon"
             />
             }

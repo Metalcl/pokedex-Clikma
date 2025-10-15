@@ -227,4 +227,32 @@ export class TableDisplayComponent {
     const segments = url.split('/').filter(segment => segment);
     return segments.pop() || '#?';
   }
+
+  getTypeNameInSpanish(typeName: string): string {
+    const typeMap: { [key: string]: string } = {
+      'normal': 'Normal',
+      'fire': 'Fuego',
+      'water': 'Agua',
+      'grass': 'Planta',
+      'electric': 'Eléctrico',
+      'ice': 'Hielo',
+      'fighting': 'Lucha',
+      'poison': 'Veneno',
+      'ground': 'Tierra',
+      'flying': 'Volador',
+      'psychic': 'Psíquico',
+      'bug': 'Bicho',
+      'rock': 'Roca',
+      'ghost': 'Fantasma',
+      'dragon': 'Dragón',
+      'steel': 'Acero',
+      'fairy': 'Hada',
+      'dark': 'Siniestro',
+    };
+
+    const lowerCaseName = typeName.toLowerCase();
+    return typeMap[lowerCaseName] || typeName;
+  }
+
+
 }
