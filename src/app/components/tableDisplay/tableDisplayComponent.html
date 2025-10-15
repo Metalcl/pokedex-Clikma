@@ -4,6 +4,15 @@
 <div class="p-4">Cargando Pokémon...</div>
 }
 
+<div class="flex justify-between items-center p-2">
+        <app-searcher (search)="onSearch($event)"></app-searcher>
+
+        <app-sorter
+          [currentDirection]="currentSortDirection"
+          (sortChange)="onSortChange($event)"
+        ></app-sorter>
+      </div>
+
 <div class="card p-4">
   @if (pokemonList$ | async; as data) { @if (data.results || totalRecords > 0) {
   <p-table
@@ -22,17 +31,6 @@
     [scrollable]="true"
     [tableStyleClass]="'p-datatable-striped'"
   >
-    <ng-template #caption>
-      <div class="flex justify-between items-center p-2">
-        <app-searcher (search)="onSearch($event)"></app-searcher>
-
-        <app-sorter
-          [currentDirection]="currentSortDirection"
-          (sortChange)="onSortChange($event)"
-        ></app-sorter>
-      </div>
-    </ng-template>
-
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 25%" class="text-left">Número</th>
