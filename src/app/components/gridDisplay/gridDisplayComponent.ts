@@ -107,8 +107,8 @@ export class GridDisplayComponent implements OnInit {
 
   private initializeStatsOptions(): any {
     const chartColor = '#7E57C2';
-    const textColor = '#F0F0F0';
-    const gridColor = '#444444';
+    const textColor = '#9b9b9b';
+    const gridColor = '#9b9b9b';
     const maxStatValue = 255;
     return {
       responsive: true,
