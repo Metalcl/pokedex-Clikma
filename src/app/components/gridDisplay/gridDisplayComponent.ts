@@ -8,9 +8,16 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { SearcherComponent } from '../../components/searcher/searcherComponent';
 import { SorterComponent, SortDirection } from '../../components/sorter/sorterComponent';
 
+interface PokemonResult {
+  name: string;
+  url: string;
+  imageUrlDreamWorld: string | null;
+  imageUrlDefault: string;
+}
+
 interface PokemonListResponse {
   count: number;
-  results: { name: string, url: string }[];
+  results: PokemonResult[];
 }
 
 @Component({
