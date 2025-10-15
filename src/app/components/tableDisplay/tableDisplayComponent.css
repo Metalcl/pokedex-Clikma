@@ -190,3 +190,10 @@
     margin: 0 auto 1rem;
     width: 100%;
 }
+
+.table-container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+}
