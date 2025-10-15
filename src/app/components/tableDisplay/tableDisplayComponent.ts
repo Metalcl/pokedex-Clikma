@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, TitleCasePipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, of, startWith, tap } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
 
 import { TableModule } from 'primeng/table';
@@ -13,6 +13,7 @@ import { CardModule } from 'primeng/card';
 import { PokemonDetailService } from '../../services/Pokmemon-detail.service';
 import { SortDirection, SorterComponent } from '../../components/sorter/sorterComponent';
 import { SearcherComponent } from '../../components/searcher/searcherComponent';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-table-display',
@@ -27,8 +28,10 @@ import { SearcherComponent } from '../../components/searcher/searcherComponent';
     SorterComponent,
     DialogModule,
     AvatarModule,
-    CardModule
+    CardModule,
+    TooltipModule
   ],
+  styleUrls: ['./tableDisplayComponent.css'],
   styles: [`
     :host ::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even) {
         background-color: #202020;
@@ -55,14 +58,17 @@ export class TableDisplayComponent {
 
   visible: boolean = false;
   selectedPokemon: any = null;
-  fullPokemonDetails: any = null;
+  fullPokemonDetails$!: Observable<any | 'error'>;
 
   @Output() viewDetails = new EventEmitter<any>();
   @Output() search = new EventEmitter<string>();
   @Output() sortChange = new EventEmitter<SortDirection>();
   @Output() pageChange = new EventEmitter<PaginatorState>();
 
-  constructor(private detailService: PokemonDetailService) { }
+  constructor(
+    private detailService: PokemonDetailService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   hideDialog(): void {
     this.visible = false;
@@ -71,39 +77,30 @@ export class TableDisplayComponent {
 
   onViewDetails(pokemon: any): void {
     this.selectedPokemon = pokemon;
-    this.fullPokemonDetails = null;
     this.visible = true;
-
     const identifier = pokemon.name;
-
-    this.detailService.getPokemonDetails(identifier).subscribe({
-      next: (details) => {
+    this.fullPokemonDetails$ = this.detailService.getPokemonDetails(identifier).pipe(
+      tap(details => {
         if (details) {
-          this.fullPokemonDetails = details;
-          const { height, id, name, sprites, stats, types } = details;
-
-          const dataToLog = {
-            height,
-            id,
-            name,
-            sprites,
-            stats,
-            types
-          };
-
-          console.log(dataToLog);
+          console.log({
+            height: details.height,
+            id: details.id,
+            name: details.name,
+            sprites: details.sprites,
+            stats: details.stats,
+            types: details.types
+          });
 
         } else {
           console.error('No se pudo cargar la data completa del Pokémon.');
-          this.fullPokemonDetails = 'error';
         }
-      },
-      error: (err) => {
-        console.error('Error al cargar detalles:', err);
-        this.fullPokemonDetails = 'error';
-      }
-    });
+      }),
 
+      catchError(err => {
+        console.error('Error al cargar detalles:', err);
+        return of('error');
+      })
+    );
   }
 
   onSearch(searchTerm: string): void {
