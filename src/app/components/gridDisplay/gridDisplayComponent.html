@@ -34,6 +34,8 @@
     [first]="offset"
     [rowsPerPageOptions]="[10, 20, 50]"
     (onPageChange)="onPageChange($event)"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} Pokémon"
   >
   </p-paginator>
   } } @else { @if (errorMessage) {
