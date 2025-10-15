@@ -36,3 +36,151 @@
   color: #f0f0f0;
   border: 1px solid #444;
 }
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+  background-color: #1f1f1f !important;
+  color: #f0f0f0 !important;
+  padding: 2rem !important;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+  background-color: #1f1f1f !important;
+  color: #f0f0f0 !important;
+}
+
+:host ::ng-deep .pokemon-detail-card .p-card {
+  background: transparent !important;
+  color: #f0f0f0 !important;
+  width: 100%;
+}
+
+:host ::ng-deep .pokemon-detail-card .p-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+:host ::ng-deep .pokemon-detail-card .p-card-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+:host ::ng-deep .pokemon-detail-card .p-card-subtitle {
+  font-size: 1.25rem;
+  color: #ccc;
+}
+
+.image-type-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.image-types-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.type-icons-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.type-icon {
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.basic-info-horizontal {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.basic-info-horizontal p {
+  margin: 0;
+}
+
+.separator {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #444;
+  margin: 0.4rem 0;
+}
+
+.stats-group {
+  width: 100%;
+}
+
+.stats-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.pokemon-carousel {
+  width: 100%;
+  max-width: 25rem;
+  margin: 0 auto;
+  margin-bottom: 1.5rem;
+}
+
+.carousel-item-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.pokemon-sprite {
+  display: block;
+}
+
+:host ::ng-deep .pokemon-carousel .p-carousel-prev,
+:host ::ng-deep .pokemon-carousel .p-carousel-next {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f0f0f0;
+  border: 1px solid #444;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  z-index: 10;
+}
+
+.no-image-placeholder {
+  height: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  border: 1px dashed #444;
+  margin: 0 auto 1rem;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  :host ::ng-deep .p-dialog {
+    width: 90% !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

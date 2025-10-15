@@ -9,12 +9,14 @@
 
   @if (pokemonList$ | async; as data) { @if (data && data.results && data.results.length > 0) {
   <div class="pokedex-grid">
-    @for (pokemon of data.results; track pokemon.name; let i = $index) { @if (getPokemonId(i,
-    pokemon.url); as id) {
+    @for (pokemon of data.results; track pokemon.name; let i = $index) { @if
+    (getPokemonId(pokemon.url); as id) {
     <p-card
       [header]="pokemon.name | titlecase"
       [subheader]="'#' + id"
-      [style]="{ width: '18rem', margin: '1rem', textAlign: 'center' }"
+      [style]="{ width: '18rem', margin: '1rem', textAlign: 'center', cursor: 'pointer' }"
+      (click)="onViewDetails(pokemon)"
+      class="pokemon-grid-card"
     >
       <div>
         <img
@@ -58,4 +60,98 @@
     }
   </div>
   }
+
+  <p-dialog
+    [(visible)]="visible"
+    [modal]="true"
+    [style]="{ width: '40rem' }"
+    header="Información detallada"
+  >
+    <div class="dialog-content-wrapper">
+      @if (fullPokemonDetails$ | async; as details) { @if (details === 'error') {
+      <p class="error-text">Error al cargar los detalles completos del Pokémon.</p>
+      } @else {
+      <p-card
+        [header]="details.name | titlecase"
+        [subheader]="'N° : ' + details.id"
+        class="pokemon-detail-card"
+      >
+        <div class="image-type-container">
+          <hr class="separator" />
+
+          <div class="image-types-group">
+            @if (pokemonSprites.length > 0) {
+            <p-carousel
+              [value]="pokemonSprites"
+              [numVisible]="1"
+              [numScroll]="1"
+              [responsiveOptions]="responsiveOptions"
+              styleClass="pokemon-carousel"
+            >
+              <ng-template let-spriteUrl #item>
+                <div class="carousel-item-wrapper">
+                  <img
+                    [src]="spriteUrl"
+                    [alt]="details.name | titlecase"
+                    class="pokemon-sprite"
+                    style="height: 20rem; width: auto"
+                  />
+                </div>
+              </ng-template>
+            </p-carousel>
+            } @else {
+            <div class="no-image-placeholder">Imagen no disponible</div>
+            }
+            <h4 class="visually-hidden">Tipo</h4>
+
+            <div class="type-icons-wrapper">
+              @for (typeInfo of details.types; track typeInfo.slot) {
+              <img
+                [src]="'/types/' + typeInfo.type.name.toLowerCase() + '.png'"
+                [title]="getTypeNameInSpanish(typeInfo.type.name)"
+                [alt]="'Tipo ' + getTypeNameInSpanish(typeInfo.type.name)"
+                style="height: 3.5rem; width: 3.5rem; object-fit: contain"
+                class="type-icon"
+              />
+              }
+            </div>
+          </div>
+
+          <hr class="separator" />
+
+          <div class="stats-group">
+            <h4 class="stats-title">Información básica</h4>
+
+            <div class="basic-info-horizontal">
+              <p>
+                Altura: <b>{{ details.height / 10 }} m</b>
+              </p>
+
+              <p>
+                Peso: <b>{{ details.weight / 10 }} kg</b>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="separator" />
+
+        <div class="stats-group chart-container">
+          <h4 class="stats-title">Estadísticas Base</h4>
+
+          @if (statsData) {
+          <p-chart
+            type="radar"
+            [data]="statsData"
+            [options]="statsOptions"
+            class="pokemon-radar-chart"
+          />
+          }
+        </div>
+      </p-card>
+      } } @else {
+      <p>Cargando detalles del Pokémon...</p>
+      }
+    </div>
+  </p-dialog>
 </div>
