@@ -27,6 +27,7 @@ interface PokemonListResponse {
     CommonModule, TitleCasePipe, PaginatorModule, CardModule, SkeletonModule,
     SearcherComponent, SorterComponent,
   ],
+  styleUrls: ['../gridDisplay/gridDisplayComponent.css'],
   templateUrl: './gridDisplayComponent.html',
   styles: [`
     .pokedex-grid {
