@@ -38,12 +38,11 @@ import { TooltipModule } from 'primeng/tooltip';
   styleUrls: ['./tableDisplayComponent.css'],
   styles: [`
     :host ::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even) {
-        background-color: #202020;
-        background-color: #44444;
+    background-color: var(--surface-ground) !important;
     }
 
     :host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
-        background-color: transparent !important;
+        background-color: rgba(0, 0, 0, 0.1) !important;
     }
   `],
   templateUrl: './tableDisplayComponent.html',
