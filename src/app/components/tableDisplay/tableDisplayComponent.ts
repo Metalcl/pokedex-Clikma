@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
+import { CarouselModule } from 'primeng/carousel';
 
 import { PokemonDetailService } from '../../services/Pokmemon-detail.service';
 import { SortDirection, SorterComponent } from '../../components/sorter/sorterComponent';
@@ -29,7 +30,8 @@ import { TooltipModule } from 'primeng/tooltip';
     DialogModule,
     AvatarModule,
     CardModule,
-    TooltipModule
+    TooltipModule,
+    CarouselModule,
   ],
   styleUrls: ['./tableDisplayComponent.css'],
   styles: [`
@@ -65,10 +67,36 @@ export class TableDisplayComponent {
   @Output() sortChange = new EventEmitter<SortDirection>();
   @Output() pageChange = new EventEmitter<PaginatorState>();
 
+  pokemonSprites: string[] = [];
+  responsiveOptions: any[] = [
+    { breakpoint: '1400px', numVisible: 1, numScroll: 1 },
+    { breakpoint: '767px', numVisible: 1, numScroll: 1 },
+    { breakpoint: '575px', numVisible: 1, numScroll: 1 },
+  ];
+
   constructor(
     private detailService: PokemonDetailService,
     private cdr: ChangeDetectorRef
   ) { }
+
+  private extractSprites(sprites: any): string[] {
+    if (!sprites) return [];
+    const orderedKeys = [
+      'front_default',
+      'back_default',
+      'front_shiny',
+      'back_shiny',
+    ];
+
+    const urls: string[] = [];
+    for (const key of orderedKeys) {
+      if (sprites[key] && typeof sprites[key] === 'string') {
+        urls.push(sprites[key]);
+      }
+    }
+
+    return urls;
+  }
 
   hideDialog(): void {
     this.visible = false;
@@ -82,22 +110,25 @@ export class TableDisplayComponent {
     this.fullPokemonDetails$ = this.detailService.getPokemonDetails(identifier).pipe(
       tap(details => {
         if (details) {
+
+          this.pokemonSprites = this.extractSprites(details.sprites);
+
           console.log({
             height: details.height,
             id: details.id,
             name: details.name,
             sprites: details.sprites,
-            stats: details.stats,
-            types: details.types
+            types: details.types,
+            pokemonSprites: this.pokemonSprites
           });
-
         } else {
           console.error('No se pudo cargar la data completa del Pokémon.');
+          this.pokemonSprites = [];
         }
       }),
-
       catchError(err => {
         console.error('Error al cargar detalles:', err);
+        this.pokemonSprites = [];
         return of('error');
       })
     );

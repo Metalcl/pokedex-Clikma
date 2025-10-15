@@ -91,12 +91,28 @@
       <div class="image-type-container">
         <hr class="separator" />
         <div class="image-types-group">
-          <img
-            [src]="details.sprites?.front_default"
-            alt="{{ details.name | titlecase }} sprite"
-            style="height: 20rem; width: auto"
-            class="pokemon-sprite"
-          />
+          @if (pokemonSprites.length > 0) {
+          <p-carousel
+            [value]="pokemonSprites"
+            [numVisible]="1"
+            [numScroll]="1"
+            [responsiveOptions]="responsiveOptions"
+            styleClass="pokemon-carousel"
+          >
+            <ng-template let-spriteUrl #item>
+              <div class="carousel-item-wrapper">
+                <img
+                  [src]="spriteUrl"
+                  [alt]="details.name | titlecase"
+                  class="pokemon-sprite"
+                  style="height: 20rem; width: auto"
+                />
+              </div>
+            </ng-template>
+          </p-carousel>
+          } @else {
+          <div class="no-image-placeholder">Imagen no disponible</div>
+          }
           <h4 class="visually-hidden">Tipo</h4>
           <div class="type-icons-wrapper">
             @for (typeInfo of details.types; track typeInfo.slot) {
@@ -116,8 +132,12 @@
         <div class="stats-group">
           <h4 class="stats-title">Información básica</h4>
           <div class="basic-info-horizontal">
-            <p>Altura: <b>{{ details.height / 10 }} m</b></p>
-            <p>Peso: <b>{{ details.weight / 10 }} kg</b></p>
+            <p>
+              Altura: <b>{{ details.height / 10 }} m</b>
+            </p>
+            <p>
+              Peso: <b>{{ details.weight / 10 }} kg</b>
+            </p>
           </div>
         </div>
       </div>
