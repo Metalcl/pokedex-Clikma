@@ -7,8 +7,8 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 
-import { SortDirection, SorterComponent } from '../../components/sorter/sorterComponent'; // Ajusta la ruta
-import { SearcherComponent } from '../../components/searcher/searcherComponent'; // Ajusta la ruta
+import { SortDirection, SorterComponent } from '../../components/sorter/sorterComponent';
+import { SearcherComponent } from '../../components/searcher/searcherComponent';
 
 @Component({
   selector: 'app-table-display',
@@ -22,6 +22,16 @@ import { SearcherComponent } from '../../components/searcher/searcherComponent';
     SearcherComponent,
     SorterComponent
   ],
+  styles: [`
+    :host ::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even) {
+        background-color: #202020;
+        background-color: #44444;
+    }
+
+    :host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+        background-color: transparent !important;
+    }
+  `],
   templateUrl: './tableDisplayComponent.html',
 })
 
