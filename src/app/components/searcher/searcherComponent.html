@@ -1,14 +1,18 @@
-<div class="search-container">
+<!-- <div class="search-container">
   <span class="p-input-icon-left w-full md:w-30rem">
     <i class="pi pi-search"></i>
 
-    <input
-      type="text"
-      pInputText
-      placeholder="Buscador"
-      [ngModel]="searchQuery()"
-      (ngModelChange)="onSearchChange($event)"
+    <p-autoComplete
+      [suggestions]="suggestions"
+      (completeMethod)="searchPokemon($event)"
+      [(ngModel)]="value"
+      (onSelect)="onItemSelect($event)"
+      (onClear)="clearSearch()"
+      (onBlur)="onTouched()"
+      placeholder="Buscar Pokémon por nombre..."
+      [dropdown]="true"
       class="w-full"
-    />
+    ></p-autoComplete>
   </span>
-</div>
+</div> -->
+
