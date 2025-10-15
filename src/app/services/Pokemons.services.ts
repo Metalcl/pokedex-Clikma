@@ -22,9 +22,6 @@ export class PokemonService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Obtiene la lista paginada y luego los detalles de la imagen para cada Pokémon.
-   */
   getPokemonList(limit: number, offset: number): Observable<PokemonListResponse> {
     return this.http.get<any>(`${this.baseUrl}?limit=${limit}&offset=${offset}`).pipe(
       switchMap(response =>
