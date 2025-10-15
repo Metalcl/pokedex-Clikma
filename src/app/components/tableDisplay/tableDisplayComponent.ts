@@ -189,14 +189,14 @@ export class TableDisplayComponent {
           this.pokemonSprites = this.extractSprites(details.sprites);
           this.setupRadarChart(details);
 
-          console.log({
-            height: details.height,
-            id: details.id,
-            name: details.name,
-            sprites: details.sprites,
-            types: details.types,
-            pokemonSprites: this.pokemonSprites
-          });
+          // console.log({
+          //   height: details.height,
+          //   id: details.id,
+          //   name: details.name,
+          //   sprites: details.sprites,
+          //   types: details.types,
+          //   pokemonSprites: this.pokemonSprites
+          // });
         } else {
           console.error('No se pudo cargar la data completa del Pokémon.');
           this.pokemonSprites = [];
