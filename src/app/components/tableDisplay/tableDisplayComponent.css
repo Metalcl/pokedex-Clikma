@@ -28,7 +28,7 @@
 :host ::ng-deep .p-dialog .p-dialog-header {
   background-color: #1f1f1f !important;
   color: #f0f0f0 !important;
-  border-bottom: 1px solid #333;
+  /* border-bottom: 1px solid #333; */
 }
 
 :host ::ng-deep .pokemon-detail-card .p-card {

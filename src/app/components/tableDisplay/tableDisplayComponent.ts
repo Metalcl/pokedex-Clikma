@@ -10,6 +10,7 @@ import { DialogModule } from 'primeng/dialog';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
+import { ChartModule } from 'primeng/chart';
 
 import { PokemonDetailService } from '../../services/Pokmemon-detail.service';
 import { SortDirection, SorterComponent } from '../../components/sorter/sorterComponent';
@@ -32,6 +33,7 @@ import { TooltipModule } from 'primeng/tooltip';
     CardModule,
     TooltipModule,
     CarouselModule,
+    ChartModule,
   ],
   styleUrls: ['./tableDisplayComponent.css'],
   styles: [`
@@ -74,10 +76,83 @@ export class TableDisplayComponent {
     { breakpoint: '575px', numVisible: 1, numScroll: 1 },
   ];
 
+  statsData: any;
+  statsOptions: any;
+
   constructor(
     private detailService: PokemonDetailService,
     private cdr: ChangeDetectorRef
   ) { }
+
+  private setupRadarChart(details: any) {
+    if (!details || !details.stats) return;
+    const statNameMap: { [key: string]: string } = {
+      'hp': 'Vida',
+      'attack': 'Ataque',
+      'defense': 'Defensa',
+      'special-attack': 'Atq. Especial',
+      'special-defense': 'Def. Especial',
+      'speed': 'Velocidad',
+    };
+    const labels = details.stats.map((s: any) => {
+      const name = s.stat.name.toLowerCase();
+      return statNameMap[name] || name.toUpperCase();
+    });
+
+    const dataValues = details.stats.map((s: any) => s.base_stat);
+
+    const chartColor = '#7E57C2';
+    const textColor = '#F0F0F0';
+    const gridColor = '#444444';
+    const maxStatValue = 255;
+    this.statsData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Estadísticas Base',
+          data: dataValues,
+          borderColor: chartColor,
+          backgroundColor: 'rgba(126, 87, 194, 0.2)',
+          pointBackgroundColor: chartColor,
+          pointBorderColor: textColor,
+          pointHoverBackgroundColor: textColor,
+          pointHoverBorderColor: chartColor,
+        },
+      ],
+    };
+    this.statsOptions = {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor,
+          },
+        },
+      },
+      scales: {
+        r: {
+          min: 0,
+          max: maxStatValue,
+          pointLabels: {
+            color: textColor,
+            font: {
+              size: 14
+            }
+          },
+          grid: {
+            color: gridColor,
+          },
+          angleLines: {
+            color: gridColor,
+          },
+          ticks: {
+            display: false
+          },
+        },
+      },
+    };
+  }
 
   private extractSprites(sprites: any): string[] {
     if (!sprites) return [];
@@ -112,6 +187,7 @@ export class TableDisplayComponent {
         if (details) {
 
           this.pokemonSprites = this.extractSprites(details.sprites);
+          this.setupRadarChart(details);
 
           console.log({
             height: details.height,
