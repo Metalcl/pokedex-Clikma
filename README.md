@@ -1,59 +1,83 @@
-# PokedexClikma
+# Pokedex - Angular 20
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.2.
+## 📝 Descripción del proyecto
 
-## Development server
+Este proyecto es una **Pokedex** desarrollada en **Angular 20**, diseñada como una demostración práctica de mis habilidades técnicas en el framework. Su principal objetivo es la interacción eficiente y asíncrona con servicios externos. Para ello, consume la API pública **[PokeAPI](https://pokeapi.co/)**, extrayendo datos de Pokémon para presentarlos de forma clara y accesible. El desarrollo se ha enfocado en la **gestión datos asíncronos** y una **estructura modular de componentes**, asegurando escalabilidad y mantenibilidad en la aplicación.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🛠️ Instrucciones de instalación y ejecución
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Estas instrucciones te guiarán para poner en marcha una copia local del proyecto para propósitos de desarrollo y pruebas.
 
-## Code scaffolding
+### Requisitos previos
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Asegúrate de tener instalado **Node.js** y el **CLI de Angular 20** en tu sistema.
 
-```bash
-ng generate component component-name
-```
+**Instalar Node.js**
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1.  Dirígete al sitio web oficial de Node.js: **[https://nodejs.org/](https://nodejs.org/)**.
+2.  Descarga e instala la versión **LTS**.
+3.  Una vez finalizada la instalación, puedes verificar que **"Node.js"** y **"npm"** están instalados correctamente ejecutando los siguientes comandos en tu terminal:
 
 ```bash
-ng generate --help
+    node -v
+    npm -v
 ```
 
-## Building
+**Instalar Angular CLI versión 20**
 
-To build the project run:
+Angular (CLI) es la herramienta que usaremos para ejecutar la aplicación.
+
+1.  Abre tu terminal o línea de comandos.
+2.  Instala el CLI de forma global (`-g`) especificando la versión 20:
+
+    ```bash
+    npm install -g @angular/cli@20
+    ```
+
+3.  **Comprobar la Versión:**
+
+    Puedes verificar que la instalación fue correcta y que tienes la versión 20 del CLI:
+
+    ```bash
+    ng version
+    ```
+
+### Clonar y configurar el proyecto
+
+**Clonar el repositorio**
+
+Utiliza `git` para descargar el código fuente
 
 ```bash
-ng build
+git clone https://github.com/Metalcl/pokedex-Clikma.git
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+**Accede al repositorio clonado**
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Navega a la carpeta recién clonada
 
 ```bash
-ng test
+cd pokedex-Clikma
 ```
 
-## Running end-to-end tests
+**Instala los paquetes y dependencias**
 
-For end-to-end (e2e) testing, run:
+Una vez dentro del directorio, instala todas las dependencias del proyecto definidas en (`package.json`)
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Ejecuta el proyecto
 
-## Additional Resources
+**Levantar el proyecto**
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Inicia el servidor de desarrollo de Angular. La opción (`-o`) abrirá automáticamente la aplicación en tu navegador predeterminado.
+
+```bash
+ng serve -o
+```
+
+La aplicación estará accesible en tu navegador en la dirección (`http://localhost:4200/`).
