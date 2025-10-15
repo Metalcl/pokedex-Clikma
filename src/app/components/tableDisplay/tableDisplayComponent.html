@@ -58,7 +58,14 @@
           />
         </td>
 
-        <td class="align-middle text-left"></td>
+        <td class="align-middle text-left">
+          <p-button
+            label="Ver Más"
+            (onClick)="onViewDetails(pokemon)"
+            icon="pi pi-eye"
+
+          />
+        </td>
       </tr>
     </ng-template>
 
@@ -72,3 +79,23 @@
   </p-table>
   } }
 </div>
+
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+  header="Detalles de {{ selectedPokemon?.name | titlecase }}"
+>
+  <div class="p-4">
+    @if (selectedPokemon) {
+    <p>Datos del Pokémon seleccionado:</p>
+    <pre>{{ selectedPokemon | json }}</pre>
+    } @else {
+    <p>Contenido del diálogo vacío.</p>
+    }
+  </div>
+
+  <ng-template #footer>
+    <p-button label="Cerrar" [text]="true" (click)="visible = false" />
+  </ng-template>
+</p-dialog>
