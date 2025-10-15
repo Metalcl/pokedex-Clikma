@@ -10,13 +10,15 @@ import { TableDisplayComponent } from '../components/tableDisplay/tableDisplayCo
 
 import { SortDirection } from '../components/sorter/sorterComponent';
 import { PaginatorState } from 'primeng/paginator';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
   selector: 'app-pokedex-page',
   standalone: true,
-  imports: [CommonModule, GridDisplayComponent, TableDisplayComponent],
+  imports: [CommonModule, GridDisplayComponent, TableDisplayComponent, ButtonModule],
   templateUrl: '../pages/pokedexPage.html',
+  styleUrls: ['../pages/pokedexPage.css']
 })
 export class PokedexPage implements OnInit {
 

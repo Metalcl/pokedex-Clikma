@@ -1,0 +1,4 @@
+.view-selector {
+  display: flex;
+  gap: 1rem; /* Esta propiedad define el espacio entre los elementos hijos (1rem = 16px) */
+}

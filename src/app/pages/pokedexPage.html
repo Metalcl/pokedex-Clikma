@@ -1,11 +1,22 @@
 <div>
-  <div class="view-selector flex space-x-4 mb-4">
-    <button (click)="setView('table')" [class.active]="currentView === 'table'">
-      Mostrar Tabla
-    </button>
-    <button (click)="setView('grid')" [class.active]="currentView === 'grid'">
-      Mostrar Grilla
-    </button>
+  <div class="view-selector mb-4">
+    <p-button
+      (onClick)="setView('table')"
+      label="Tabla"
+      [styleClass]="
+        currentView === 'table' ? 'p-button-primary' : 'p-button-secondary p-button-text'
+      "
+      [class.active-view-button]="currentView === 'table'"
+    ></p-button>
+
+    <p-button
+      (onClick)="setView('grid')"
+      label="Cuadrícula"
+      [styleClass]="
+        currentView === 'grid' ? 'p-button-primary' : 'p-button-secondary p-button-text'
+      "
+      [class.active-view-button]="currentView === 'grid'"
+    ></p-button>
   </div>
 
   @if (currentView === 'table') {
