@@ -1,19 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
-import { switchMap, map, catchError, shareReplay } from 'rxjs/operators';
+import { switchMap, map, catchError, shareReplay, tap } from 'rxjs/operators';
 
-interface PokemonResult {
+
+interface PokemonType {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  }
+}
+
+interface FullPokemonnDetail{
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  base_experience: number;
+}
+
+interface PokemonResult extends FullPokemonnDetail{
   name: string;
   url: string;
   imageUrlDreamWorld: string | null;
   imageUrlDefault: string;
+  types: PokemonType[]
 }
 
 interface PokemonListResponse {
   count: number;
   results: PokemonResult[];
 }
+
 
 @Injectable({ providedIn: 'root' })
 export class PokemonService {
@@ -29,7 +48,10 @@ export class PokemonService {
           map(resultsWithImages => ({
             count: response.count,
             results: resultsWithImages
-          }))
+          })),
+          // tap(finalData => {
+          //   console.log(finalData.results)
+          // })
         )
       )
     );
@@ -43,14 +65,22 @@ export class PokemonService {
     const detailRequests = results.map(pokemon =>
       this.http.get<any>(pokemon.url).pipe(
         map(detail => ({
+          ...detail,
           name: pokemon.name,
           url: pokemon.url,
           imageUrlDreamWorld: detail.sprites.other?.dream_world?.front_default || null,
-          imageUrlDefault: detail.sprites.front_default || ''
+          imageUrlDefault: detail.sprites.front_default || '',
+          types: detail.types || []
         })),
         catchError(error => {
           console.error(`Error al obtener detalles para ${pokemon.name}:`, error);
-          return of({ name: pokemon.name, url: pokemon.url, imageUrlDreamWorld: null, imageUrlDefault: '' });
+          return of({
+            name: pokemon.name,
+            url: pokemon.url,
+            imageUrlDreamWorld: null,
+            imageUrlDefault: '',
+            types: []
+          });
         })
       )
     );
@@ -81,10 +111,12 @@ export class PokemonService {
       return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(
         map(data => ({
           results: [{
+            ...data,
             name: data.name,
             url: `${this.baseUrl}/${id}/`,
             imageUrlDreamWorld: data.sprites.other?.dream_world?.front_default || null,
-            imageUrlDefault: data.sprites.front_default || ''
+            imageUrlDefault: data.sprites.front_default || '',
+            types: data.types || []
           }],
           count: 1
         })),

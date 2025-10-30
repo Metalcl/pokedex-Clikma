@@ -25,6 +25,25 @@
           style="width: 150px; height: 150px; margin: 0 auto; display: block"
         />
       </div>
+
+      <!-- <div
+        class="pokemon-types-grid-wrapper"
+        style="display: flex; justify-content: center; gap: 8px; margin-top: 10px"
+      >
+        @for (typeInfo of $any(pokemon).types; track typeInfo.slot) {
+        <img
+          [src]="'/types/' + typeInfo.type.name.toLowerCase() + '.png'"
+          [title]="getTypeNameInSpanish(typeInfo.type.name)"
+          [alt]="'Tipo ' + getTypeNameInSpanish(typeInfo.type.name)"
+          style="height: 30px; width: 30px; object-fit: contain"
+        />
+        }
+      </div> -->
+
+      <!-- <div style="margin-top: 10px; font-size: 1.1rem; font-weight: bold">
+        {{ $any(pokemon).height}}
+      </div> -->
+
     </p-card>
     } }
   </div>
